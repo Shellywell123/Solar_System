@@ -212,22 +212,10 @@ def solar_system(grid):
     leg = ax.legend(loc='upper left', facecolor='none')
     for text in leg.get_texts():
         text.set_color('w')
-    
-    # path = "C://Users//benja//Documents//Programming//Python Projects//Solar_System//stars.png"
-    
-    # fn = get_sample_data(path, asfileobj=False)
-    # arr = read_png(fn)
-    # height, width = arr.shape[:2]
-    # stepX, stepY = 10e9/width, 10e9/height
-    
-    # X1 = np.arange(-5e9, 5e9, stepX)
-    # Y1 = np.arange(-5e9, 5e9, stepY)
-    # X1, Y1 = np.meshgrid(X1, Y1)
-    # ax.plot_surface(X1, Y1, np.atleast_2d(-5e9), rstride=1, cstride=1, facecolors=arr)
         
-    #ax.show() 
+    plt.show()
+
 
 ###############################################################################
 
 solar_system('no_grid')
-plt.show()
