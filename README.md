@@ -25,13 +25,13 @@ python3 Solar_System.py
 ```
 
 ## Features
-- Approximate realtive distances and scale
+- Approximate relative distances and scale
 - Parallax background stars
 - Adjustable orbits
 
 ## Potential Goals
  - Image overlays for planet surfaces (will allow for planet rotations to be visible)
- - live position of planets (animated + opt to pan through time)
+ - live position of planets (animated + option to pan through time)
  - Make each dash of a planets orbit represent one day 
  - Accurate eliptical orbits with processions (all orbits currently fixed inline with x axis)
  - Accurate moons and gas rings
