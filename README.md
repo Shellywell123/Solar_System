@@ -28,8 +28,10 @@ python3 Solar_System.py
 - Animation coming soon
 
 ## Potential Goals
- - Image overlays for planet surfaces
- - live position of planets 
- - moons and rings added
+ - Image overlays for planet surfaces (will allow for planet rotaions to be visible)
+ - live position of planets (animated + opt to pan through time)
+ - make each dash of a planets orbit represent one day 
+ - accurate eliptical orbits with processions (all obrits curently fixed inline with x axis)
+ - accurate moons and rings
  - approximate star positions and brightnesses in background
  - could add satelites and space mission trajectories

@@ -5,18 +5,6 @@ Created on Mon Dec 23 18:29:56 2019
 @author: B E N
 """
 
-# to do list
-
-# make each dash represent a day 
-# animate
-# eliptical orbits
-# orbits not all fixed inline with x axis
-# moons and satelittles
-# saturn has many rings
-# make planets single points
-# rotatations (image surfaces)
-
-
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import random
