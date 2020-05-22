@@ -19,7 +19,7 @@ git pull
 ```
 
 ## Usage
-Execute 'Solar_System.py' with python 3:
+In terminal/cmd prompt, execute 'Solar_System.py' with python 3:
 ```bash
 python3 Solar_System.py
 ```
