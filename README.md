@@ -37,3 +37,4 @@ python3 Solar_System.py
  - Accurate moons and gas rings
  - Approximate star positions and brightnesses in background
  - Add satelites and space mission trajectories
+ - Add asteroid belt
