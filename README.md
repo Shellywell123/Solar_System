@@ -28,6 +28,7 @@ python3 Solar_System.py
 - Animation coming soon
 
 ## Potential Goals
+ - Image overlays for planet surfaces
  - live position of planets 
  - moons and rings added
  - approximate star positions and brightnesses in background
