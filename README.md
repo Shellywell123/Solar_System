@@ -18,7 +18,7 @@ In terminal/cmd prompt, pull the latest version:
 git pull
 ```
 
-## Usage
+## How to run:
 In terminal/cmd prompt, execute 'Solar_System.py' with python 3:
 ```bash
 python3 Solar_System.py
