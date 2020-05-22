@@ -1,5 +1,5 @@
 # Solar_System
-Interactive solarsystem plotted in matplotlib in Python 3. Fun side project made to learn more about 3D animation.
+Interactive model of our Solar System plotted in matplotlib in Python 3. Fun side project made to learn more about 3D animation.
 
 ![screenshot](Images/screenshot.png)
 ### How to setup:
