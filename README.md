@@ -2,6 +2,9 @@
 Interactive model of our Solar System plotted in matplotlib in Python 3. Fun side project made to learn more about 3D animation.
 
 ![screenshot](Images/screenshot.png)
+
+## Instructions:
+
 ### How to setup:
 In terminal/cmd prompt, clone the repository into you desired location:
 ```bash
@@ -18,7 +21,7 @@ In terminal/cmd prompt, pull the latest version:
 git pull
 ```
 
-## How to run:
+### How to run:
 In terminal/cmd prompt, execute 'Solar_System.py' with python 3:
 ```bash
 python3 Solar_System.py
