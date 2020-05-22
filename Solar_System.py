@@ -155,9 +155,14 @@ def solar_system(grid):
     """
     creates solarsystems
     """
-    plt.clf()
-    fig = plt.figure('Solar System',figsize=[17,9])
-    
+   
+    fig = plt.figure(0)
+    fig.canvas.set_window_title('Solar System')
+    try:
+        mng = plt.get_current_fig_manager()
+        mng.resize(*mng.window.maxsize())
+    except:
+        pass
     ax = fig.add_subplot(111, projection='3d')
     fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
     fig.set_facecolor('black')
