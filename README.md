@@ -7,9 +7,16 @@ Interactive solarsystem plotted in matplotlib in Python 3
 git clone https://github.com/Shellywell123/Solar_System.git
 ```
 
-## Usage
+### How to update:
 
-- execute 
+```bash
+cd Solar_System/
+```
+```bash
+git pull
+```
+
+## Usage
 ```bash
 python3 Solar_System.py
 ```
