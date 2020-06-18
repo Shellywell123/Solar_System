@@ -8,7 +8,7 @@ Interactive model of our Solar System plotted in matplotlib in Python 3. Fun sid
 ### How to setup:
 In terminal/cmd prompt, clone the repository into you desired location:
 ```bash
-git clone https://github.com/Shellywell123/Solar_System.git
+foo@bar:~$ git clone https://github.com/Shellywell123/Solar_System.git
 ```
 
 ### How to update:
@@ -18,13 +18,13 @@ cd Solar_System/
 ```
 In terminal/cmd prompt, pull the latest version:
 ```bash
-git pull
+foo@bar:~$ git pull
 ```
 
 ### How to run:
 In terminal/cmd prompt, execute 'Solar_System.py' with python 3:
 ```bash
-python3 Solar_System.py
+foo@bar:~$ python3 Solar_System.py
 ```
 
 ## Features
