@@ -14,7 +14,7 @@ foo@bar:~$ git clone https://github.com/Shellywell123/Solar_System.git
 ### How to update:
 Navigate to program directory:
 ```bash
-cd Solar_System/
+foo@bar:~$ cd Solar_System/
 ```
 In terminal/cmd prompt, pull the latest version:
 ```bash
