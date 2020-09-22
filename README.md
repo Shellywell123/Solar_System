@@ -28,7 +28,8 @@ foo@bar:~$ python3 Solar_System.py
 ```
 
 ## Features
-- Approximate relative distances and scale
+- Accurate orbital distances with scaled planet sizes
+- Rendered planet surfaces
 - Parallax background stars
 - Adjustable orbits
 
@@ -41,3 +42,6 @@ foo@bar:~$ python3 Solar_System.py
  - Approximate star positions and brightnesses in background
  - Add satelites and space mission trajectories
  - Add asteroid belt
+
+# surface images
+[surface image source](https://www.solarsystemscope.com/textures/)
