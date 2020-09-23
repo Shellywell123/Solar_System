@@ -17,6 +17,10 @@ class PyTransforms:
         """
         class initaliser
         """
+        # commented out as is used very often
+        # print('#'*55)
+        # print(' PyAnimate initalised '+self.get_live_time())
+        # print('#'*55)
         pass
 
     ######################################################################################

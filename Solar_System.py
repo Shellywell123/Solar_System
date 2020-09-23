@@ -12,9 +12,6 @@ import numpy as np
 import random
 import os
 
-tf = PyTransforms()
-
-
 ################################################################################
 # begining of class
 ################################################################################
@@ -25,6 +22,8 @@ class PySpace:
         """
         class initaliser
         """
+        self.tf = PyTransforms()
+
         print('#'*55)
         print(' PySpace initalised '+self.get_live_time())
         print('#'*55)
@@ -124,11 +123,11 @@ class PySpace:
         scaling_factor = 4000
         body_radius = body_radius*scaling_factor
 
-        obliquity = tf.degrees_to_radians(obliquity)
-        orbital_inclination = tf.degrees_to_radians(orbital_inclination)
+        obliquity           = self.tf.degrees_to_radians(obliquity)
+        orbital_inclination = self.tf.degrees_to_radians(orbital_inclination)
 
         
-        image_file = 'surfaces/{}.jpg'.format(name)
+        image_file = 'Images/surfaces/{}.jpg'.format(name)
         img = plt.imread(image_file)
 
         # define a grid matching the map size, subsample along with pixel    
@@ -141,7 +140,7 @@ class PySpace:
         theta_inds = np.linspace(0, img.shape[0] - 1, count).round().astype(int)
         phi_inds   = np.linspace(0, img.shape[1] - 1, count).round().astype(int)
 
-        theta = theta[theta_inds]
+        theta = theta[theta_inds]   
         phi   = phi[phi_inds]
 
         img = img[np.ix_(theta_inds, phi_inds)]
@@ -150,20 +149,20 @@ class PySpace:
         
         # transformations
         #spherical
-        x,y,z = tf.spherical_to_cartesian(theta,phi,body_radius)
+        x,y,z = self.tf.spherical_to_cartesian(theta,phi,body_radius)
         #body tilt
-        x,y,z = tf.cartesian_transformation_obliquity(x,y,z,obliquity)
+        x,y,z = self.tf.cartesian_transformation_obliquity(x,y,z,obliquity)
         
 
         if orbit_radius != 0:
             orbit_radius,obliquity,angluar_orbital_position=self.calculate_position_and_orientation(date,hour,orbit_radius,obliquity,orbit_duration_days)
             self.plot_orbit(ax,name,colour,orbit_radius,orbital_inclination)
             #orbital position
-            x,y,z = tf.cartesian_transformation_radial(x,y,z,orbit_radius,orbital_inclination,angluar_orbital_position)
+            x,y,z = self.tf.cartesian_transformation_radial(x,y,z,orbit_radius,orbital_inclination,angluar_orbital_position)
 
 
         ax.plot_surface(x.T, y.T, z.T, facecolors=img/255, cstride=1, rstride=1)
-        print('Created', name)
+        print(' - Created', name)
         
         if ring != 'no':
             
@@ -176,6 +175,7 @@ class PySpace:
         """
         plots random stars in foreground and background
         """
+        max_lim = int(max_lim)
         
         random.seed(1)
 
@@ -210,11 +210,11 @@ class PySpace:
         ax.scatter(x1, x2, x3, c='white', s=s)
         ax.scatter(x2, x3, x1, c='white', s=s)
         ax.scatter(x3, x1, x2, c='white', s=s)
-        print('Created Stars')
+        print(' - Created Stars')
         
     ######################################################################################
     
-    def solar_system(self,grid):
+    def solar_system(self,grid,max_lim=2.5e9,show='show'):
         """
         creates solarsystems
         """
@@ -253,16 +253,15 @@ class PySpace:
         self.planet(ax ,'Sun'     ,'gold'        ,'no' ,'no' ,0       ,605000*sr ,0)
         self.planet(ax ,'Mercury' ,'peru'        ,'no' ,'no' ,46e6    ,2440   ,7.005)
         self.planet(ax ,'Venus'   ,'goldenrod'   ,'no' ,'no' ,107e6   ,6052   ,3.3947)
-        self.planet(ax ,'Earth'   ,'forestgreen' ,'no' ,'no' ,1147e6  ,6378   ,0)
+        self.planet(ax ,'Earth'   ,'forestgreen' ,'no' ,'no' ,149e6  ,6378   ,0)
         self.planet(ax ,'Mars'    ,'firebrick'   ,'no' ,'no' ,205e6   ,3397   ,1.851)
         self.planet(ax ,'Jupiter' ,'sandybrown'  ,'no' ,'no' ,741e6   ,71492  ,1.305)
         self.planet(ax ,'Saturn'  ,'yellow'      ,ring ,'no' ,1.35e9  ,60268  ,2.484)
         self.planet(ax ,'Uranus'  ,'powderblue'  ,'no' ,'no' ,2.75e9  ,25559  ,0.770)
         self.planet(ax ,'Neptune' ,'dodgerblue'  ,'no' ,'no' ,4.45e9  ,24766  ,1.769)
-       # self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no' ,'no' ,4.46e9  ,1150   ,17.142) 
+        self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no' ,'no' ,4.46e9  ,1150   ,17.142) 
         
-        max_lim =  2.5e9
-       # max_lim = 205e6
+        # max_lim = 205e6
         min_lim = -max_lim
         
         self.starry_night(ax,max_lim*5,2000)
@@ -286,14 +285,10 @@ class PySpace:
         leg = ax.legend(loc='upper left', facecolor='none')
         for text in leg.get_texts():
             text.set_color('w')
-            
-        plt.show()
+        
+        if show == 'show':
+            plt.show()
 
 ################################################################################
 # End of class
 ################################################################################
-
-ss = PySpace()
-ss.solar_system('no_grid')
-
-plt.savefig('Images/screenshot2.png')
