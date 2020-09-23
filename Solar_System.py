@@ -367,7 +367,6 @@ class PySpace:
         self.planet(ax ,'Neptune' ,'dodgerblue'  ,'no'   ,'no'    ,4.45e9 ,24766*nes  ,1.769)
         self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no'   ,'no'    ,4.46e9 ,1150*pls   ,17.142) 
         
-
         self.asteroid_belt(ax,3e9,45e8,1000,25)
 
         # max_lim = 205e6

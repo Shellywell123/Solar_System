@@ -48,6 +48,7 @@ foo@bar:~$ python3 main.py
  - Add satelites and space mission trajectories
  - Add asteroid belt
 
-# surface images
-[surface image source](https://www.solarsystemscope.com/textures/)
-[pluto image source](https://www.pinterest.co.uk/pin/334884922276313121/)
+# Sources
+[planet image source](https://www.solarsystemscope.com/textures/)\
+[pluto image source](https://www.pinterest.co.uk/pin/334884922276313121/)\
+[saturn rings source](https://blenderartists.org/uploads/default/original/4X/d/f/d/dfda2d1cabfa176fe1c415208deea3b30be87eb0.jpg)
