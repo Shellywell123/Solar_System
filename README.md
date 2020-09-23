@@ -30,9 +30,13 @@ foo@bar:~$ python3 main.py
 
 ## Features
 - Accurate orbital distances with scaled planet sizes
-- Rendered planet surfaces
+- Rendered surfaces
 - Parallax background stars
 - Adjustable orbits
+
+## Current Features in Development
+ - Moons being added
+ - rings dont render infont/behind planets correctly
 
 ## Potential Goals
  - Image overlays for planet surfaces (will allow for planet rotations to be visible)

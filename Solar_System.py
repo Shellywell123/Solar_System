@@ -43,33 +43,46 @@ class PySpace:
 
     ######################################################################################
     
-    def plot_ring(self,ax,colour,orbit_radius,ring_radius,orbital_inclination,ring_angle):
+    def ring(self,ax,name,rmin,rmax,orbit_radius,angluar_orbital_position,orbital_inclination,ring_angle):
         """
         plots planetary gas rings
         """
-        x_data = []
-        y_data = []
-        z_data = []
-        
-        theta = 2*np.pi/100
-                
-        for i in range(100+1):
-            x_orb = orbit_radius + ring_radius*np.cos(theta * i)
-            y_orb = ring_radius*np.sin(theta * i)
-            z_orb = orbit_radius*np.sin(orbital_inclination) #+  np.sin(ring_angle)
-            
-            x_data.append(x_orb)
-            y_data.append(y_orb)
-            z_data.append(z_orb)
-                
-        ax.plot(x_data,y_data,z_data,color=colour,linewidth=2)
+
+        image_file = 'Images/surfaces/{}_Rings.jpg'.format(name)
+        img        =  plt.imread(image_file)
+
+        count = 100 
+
+        u = np.linspace(0   , 2*np.pi, img.shape[0])
+        r = np.linspace(rmin, rmax   , img.shape[1])
+
+        u_inds = np.linspace(0, img.shape[0] - 1, count).round().astype(int)
+        r_inds = np.linspace(0, img.shape[1] - 1, count).round().astype(int)
+
+        u = u[u_inds]   
+        r = r[r_inds]
+
+        img = img[np.ix_(u_inds, r_inds)]
+
+        x = np.outer(r, np.cos(u))
+        y = np.outer(r, np.sin(u))
+        h = np.empty(y.shape)
+        h.fill(5)
+
+        x,y,z = self.tf.cartesian_transformation_radial(x,y,h,orbit_radius,orbital_inclination,angluar_orbital_position)
+
+        ax.plot_surface(x,y,z, facecolors=img/255, cstride=1, rstride=1,zorder=1,alpha=.5)
 
     ######################################################################################
             
-    def plot_orbit(self,ax,name,colour,orbit_radius,orbital_inclination):
+    def plot_orbit(self,ax,name,colour,orbit_radius,orbital_inclination,orbit_centre=[0,0,0]):
         """
         plots planet orbits
         """
+        x_start = orbit_centre[0]
+        y_start = orbit_centre[1]
+        z_start = orbit_centre[2]
+
         x_data = []
         y_data = []
         z_data = []
@@ -77,9 +90,9 @@ class PySpace:
         theta = 2*np.pi/100
             
         for i in range(100+1):
-            x_orb = orbit_radius*np.cos(theta * i)
-            y_orb = orbit_radius*np.sin(theta * i)
-            z_orb = x_orb * np.sin(orbital_inclination)
+            x_orb = x_start + (orbit_radius*np.cos(theta * i))
+            y_orb = y_start + (orbit_radius*np.sin(theta * i))
+            z_orb = z_start + (x_orb * np.sin(orbital_inclination))
             
             x_data.append(x_orb)
             y_data.append(y_orb)
@@ -94,8 +107,7 @@ class PySpace:
         calculates the orbital position of a body given a date
         """
 
-        #currently centered around earth
-        
+        #currently centered around earth        
         day = int(date.split('/')[0])
         
         # to be made correct 
@@ -111,23 +123,76 @@ class PySpace:
 
     ######################################################################################
 
-    def asteroid_belt(self):
+    def asteroid_belt(self,ax,rmin,rmax,num_of_asteroids,orbital_inclination):
         """
-        INCOMPLETE
+        scatter plots an asteroid belt
         """
-        pass
+
+        orbital_inclination = self.tf.degrees_to_radians(orbital_inclination)
+
+        theta = float(2*np.pi/1000)
+        for i in range(int(num_of_asteroids)+1):
+            theta = theta+random.randint(-int(np.pi/1000),int(np.pi/1000))
+            r = random.randint(int(rmin),int(rmax))
+            x_ast = r*np.cos(theta * i)
+            y_ast = r*np.sin(theta * i)
+            z_ast = x_ast * np.sin(orbital_inclination)
+            
+            s = random.randint(1,4)                
+            ax.scatter(x_ast,y_ast,z_ast,color='grey',s=s)
+        print(' - Created Asteroid Belt')
 
     ######################################################################################
 
-    def satelite(self):
+    def satelite(self,ax,name,moon_radius,moon_orbit_radius,host_orbit_radius,host_angluar_orbital_position,host_orbital_inclination):
         """
-        INCOMPLETE
+        makes a satelite to a planet
         """
-        pass
+        
+        moon_orbital_inclination      = 0
+        moon_angluar_orbital_position = 0
 
+
+        image_file = 'Images/surfaces/{}.jpg'.format(name)
+        img = plt.imread(image_file)
+
+        # define a grid matching the map size, subsample along with pixel    
+        theta = np.linspace(0, np.pi, img.shape[0])
+        rot = 0
+        phi  = np.linspace(0+rot, 2*np.pi+rot, img.shape[1])
+
+        count = 180 # keep 180 points along theta and phi
+
+        theta_inds = np.linspace(0, img.shape[0] - 1, count).round().astype(int)
+        phi_inds   = np.linspace(0, img.shape[1] - 1, count).round().astype(int)
+
+        theta = theta[theta_inds]   
+        phi   = phi[phi_inds]
+
+        img = img[np.ix_(theta_inds, phi_inds)]
+
+        theta,phi = np.meshgrid(theta, phi)
+        
+        # transformations
+
+        #spherical
+        x,y,z = self.tf.spherical_to_cartesian(theta,phi,moon_radius)
+
+        #sun to planet
+        x,y,z = self.tf.cartesian_transformation_radial(x,y,z,host_orbit_radius,host_orbital_inclination,host_angluar_orbital_position)
+        
+        x_orb,y_orb,z_orb = [0,0,0]         
+        x_orb,y_orb,z_orb = self.tf.cartesian_transformation_radial(x_orb,y_orb,z_orb,host_orbit_radius,host_orbital_inclination,host_angluar_orbital_position)
+        self.plot_orbit(ax,name,'grey',moon_orbit_radius,moon_orbital_inclination,orbit_centre=[x_orb,y_orb,z_orb])
+ 
+        # planet to moon
+        x,y,z = self.tf.cartesian_transformation_radial(x,y,z,moon_orbit_radius,moon_orbital_inclination,moon_angluar_orbital_position)
+
+        ax.plot_surface(x.T, y.T, z.T, facecolors=img/255, cstride=1, rstride=1,zorder=2,alpha=.5)    
+        
     ######################################################################################
      
-    def planet(self,ax,name,colour,ring,moons,orbit_radius,body_radius,orbital_inclination):
+    def planet(self,ax,name,orbit_colour,ring,moons,orbit_radius,body_radius,orbital_inclination):
         """
         plots planets
         """
@@ -162,31 +227,37 @@ class PySpace:
         theta,phi = np.meshgrid(theta, phi)
         
         # transformations
+
         #spherical
         x,y,z = self.tf.spherical_to_cartesian(theta,phi,body_radius)
         #body tilt
         x,y,z = self.tf.cartesian_transformation_obliquity(x,y,z,obliquity)
         
+        extras = ''
 
         if orbit_radius != 0:
             orbit_radius,obliquity,angluar_orbital_position=self.calculate_position_and_orientation(date,hour,orbit_radius,obliquity,orbit_duration_days)
-            self.plot_orbit(ax,name,colour,orbit_radius,orbital_inclination)
+            self.plot_orbit(ax,name,orbit_colour,orbit_radius,orbital_inclination)
             #orbital position
             x,y,z = self.tf.cartesian_transformation_radial(x,y,z,orbit_radius,orbital_inclination,angluar_orbital_position)
 
+            #check for moons
+            if moons != 'no':
+                name,moon_radius,moon_orbit_radius = moons
+                moon_orbit_radius = moon_orbit_radius + body_radius
+                self.satelite(ax,name,moon_radius,moon_orbit_radius,orbit_radius,angluar_orbital_position,orbital_inclination)
+                extras = extras + '+ Moon'
 
-        ax.plot_surface(x.T, y.T, z.T, facecolors=img/255, cstride=1, rstride=1)
-        print(' - Created', name)
+            #check for rings
+            if ring != 'no':            
+                rmin,rmax,ring_angle = ring
+                rmin = rmin+body_radius
+                rmax = rmax+body_radius
+                self.ring(ax,name,rmin,rmax,orbit_radius,angluar_orbital_position,orbital_inclination,ring_angle)
+                extras = extras + '+ Rings'
 
-        #check for moons
-        if moons != 'no':
-            self.satelite()
-
-        #check for rings
-        if ring != 'no':
-            
-            ring_radius,ring_angle = ring
-            self.plot_ring(ax,colour,orbit_radius,ring_radius,orbital_inclination,ring_angle)
+        ax.plot_surface(x.T, y.T, z.T, facecolors=img/255, cstride=1, rstride=1,zorder=2,alpha=.5)    
+        print(' - Created {} {}'.format(name,extras))
 
     ######################################################################################
     
@@ -251,7 +322,6 @@ class PySpace:
         fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
         fig.set_facecolor('black')
         
-        
         if grid != 'grid':
             ax.grid(False)
         else:
@@ -262,17 +332,9 @@ class PySpace:
         ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         
-        # moon info
-        #        name,moon_radius,moon_orbit_radius
-        e_moon = 'Moon',
-
-        # ring info
-        #        ring_radius,ring_angle
-        s_ring = 80000000   ,1
-
-
+        #if scaling != 'Accurate':
         # scalings (first two letters + s)
-        gen_scaling_factor = 4000
+        gen_scaling_factor = 2000
         sus = gen_scaling_factor*0.015
         mes = gen_scaling_factor
         ves = gen_scaling_factor
@@ -284,7 +346,15 @@ class PySpace:
         nes = gen_scaling_factor
         pls = gen_scaling_factor
 
-        #    planet(ax, name      ,colour        ,ring   ,moons   ,rsolar ,rplan      ,orbtilt)
+        # moon info
+        #        name,moon_radius,moon_orbit_radius
+        e_moon = 'Moon',1737*eas,384402
+
+        # ring info
+        #        rmin                  ,rmax                  ,ring_angle
+        s_ring = 7e3*sas,8e4*sas,1
+
+        #    planet(ax, name      ,orbit_colour   ,ring   ,moons   ,rsolar ,rplan      ,orbtilt)
         
         self.planet(ax ,'Sun'     ,'gold'        ,'no'   ,'no'    ,0      ,605000*sus ,0)
         self.planet(ax ,'Mercury' ,'peru'        ,'no'   ,'no'    ,46e6   ,2440*mes   ,7.005)
@@ -297,6 +367,9 @@ class PySpace:
         self.planet(ax ,'Neptune' ,'dodgerblue'  ,'no'   ,'no'    ,4.45e9 ,24766*nes  ,1.769)
         self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no'   ,'no'    ,4.46e9 ,1150*pls   ,17.142) 
         
+
+        self.asteroid_belt(ax,3e9,45e8,1000,25)
+
         # max_lim = 205e6
         min_lim = -max_lim
         
