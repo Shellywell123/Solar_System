@@ -110,23 +110,37 @@ class PySpace:
         return orbit_radius,obliquity,angluar_orbital_position
 
     ######################################################################################
-      
+
+    def asteroid_belt(self):
+        """
+        INCOMPLETE
+        """
+        pass
+
+    ######################################################################################
+
+    def satelite(self):
+        """
+        INCOMPLETE
+        """
+        pass
+
+    ######################################################################################
+     
     def planet(self,ax,name,colour,ring,moons,orbit_radius,body_radius,orbital_inclination):
         """
         plots planets
         """
+
         date = '1'
         hour = 1
         obliquity = 0
         orbit_duration_days = 1
 
-        scaling_factor = 4000
-        body_radius = body_radius*scaling_factor
-
+        # make angles rads
         obliquity           = self.tf.degrees_to_radians(obliquity)
         orbital_inclination = self.tf.degrees_to_radians(orbital_inclination)
-
-        
+    
         image_file = 'Images/surfaces/{}.jpg'.format(name)
         img = plt.imread(image_file)
 
@@ -163,7 +177,12 @@ class PySpace:
 
         ax.plot_surface(x.T, y.T, z.T, facecolors=img/255, cstride=1, rstride=1)
         print(' - Created', name)
-        
+
+        #check for moons
+        if moons != 'no':
+            self.satelite()
+
+        #check for rings
         if ring != 'no':
             
             ring_radius,ring_angle = ring
@@ -243,23 +262,40 @@ class PySpace:
         ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         
-        ring    = 80000000,1
+        # moon info
+        #        name,moon_radius,moon_orbit_radius
+        e_moon = 'Moon',
 
-        # sun down scaler as is so large relatively
-        sr = 0.015
+        # ring info
+        #        ring_radius,ring_angle
+        s_ring = 80000000   ,1
+
+
+        # scalings (first two letters + s)
+        gen_scaling_factor = 4000
+        sus = gen_scaling_factor*0.015
+        mes = gen_scaling_factor
+        ves = gen_scaling_factor
+        eas = gen_scaling_factor
+        mas = gen_scaling_factor
+        jus = gen_scaling_factor
+        sas = gen_scaling_factor
+        urs = gen_scaling_factor
+        nes = gen_scaling_factor
+        pls = gen_scaling_factor
+
+        #    planet(ax, name      ,colour        ,ring   ,moons   ,rsolar ,rplan      ,orbtilt)
         
-        #    planet(ax, name      ,colour        ,ring ,moons,rsolar  ,rplan  ,orbtilt)
-        
-        self.planet(ax ,'Sun'     ,'gold'        ,'no' ,'no' ,0       ,605000*sr ,0)
-        self.planet(ax ,'Mercury' ,'peru'        ,'no' ,'no' ,46e6    ,2440   ,7.005)
-        self.planet(ax ,'Venus'   ,'goldenrod'   ,'no' ,'no' ,107e6   ,6052   ,3.3947)
-        self.planet(ax ,'Earth'   ,'forestgreen' ,'no' ,'no' ,149e6  ,6378   ,0)
-        self.planet(ax ,'Mars'    ,'firebrick'   ,'no' ,'no' ,205e6   ,3397   ,1.851)
-        self.planet(ax ,'Jupiter' ,'sandybrown'  ,'no' ,'no' ,741e6   ,71492  ,1.305)
-        self.planet(ax ,'Saturn'  ,'yellow'      ,ring ,'no' ,1.35e9  ,60268  ,2.484)
-        self.planet(ax ,'Uranus'  ,'powderblue'  ,'no' ,'no' ,2.75e9  ,25559  ,0.770)
-        self.planet(ax ,'Neptune' ,'dodgerblue'  ,'no' ,'no' ,4.45e9  ,24766  ,1.769)
-        self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no' ,'no' ,4.46e9  ,1150   ,17.142) 
+        self.planet(ax ,'Sun'     ,'gold'        ,'no'   ,'no'    ,0      ,605000*sus ,0)
+        self.planet(ax ,'Mercury' ,'peru'        ,'no'   ,'no'    ,46e6   ,2440*mes   ,7.005)
+        self.planet(ax ,'Venus'   ,'goldenrod'   ,'no'   ,'no'    ,107e6  ,6052*ves   ,3.3947)
+        self.planet(ax ,'Earth'   ,'forestgreen' ,'no'   , e_moon ,149e6  ,6378*eas   ,0)
+        self.planet(ax ,'Mars'    ,'firebrick'   ,'no'   ,'no'    ,205e6  ,3397*mas   ,1.851)
+        self.planet(ax ,'Jupiter' ,'sandybrown'  ,'no'   ,'no'    ,741e6  ,71492*jus  ,1.305)
+        self.planet(ax ,'Saturn'  ,'yellow'      ,s_ring ,'no'    ,1.35e9 ,60268*sas  ,2.484)
+        self.planet(ax ,'Uranus'  ,'powderblue'  ,'no'   ,'no'    ,2.75e9 ,25559*urs  ,0.770)
+        self.planet(ax ,'Neptune' ,'dodgerblue'  ,'no'   ,'no'    ,4.45e9 ,24766*nes  ,1.769)
+        self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no'   ,'no'    ,4.46e9 ,1150*pls   ,17.142) 
         
         # max_lim = 205e6
         min_lim = -max_lim

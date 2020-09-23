@@ -1,7 +1,7 @@
 # Solar_System
 Interactive model of our Solar System plotted in matplotlib in Python 3. Fun side project made to learn more about 3D animation.
 
-![gif](Images/gifs/zoomout1.gif)
+![gif](Images/gifs/zoomout.gif)
 ![screenshot](Images/screenshot.png)
 
 ## Instructions:
@@ -23,9 +23,9 @@ foo@bar:~$ git pull
 ```
 
 ### How to run:
-In terminal/cmd prompt, execute 'Solar_System.py' with python 3:
+In terminal/cmd prompt, execute 'main.py' with python 3:
 ```bash
-foo@bar:~$ python3 Solar_System.py
+foo@bar:~$ python3 main.py
 ```
 
 ## Features
