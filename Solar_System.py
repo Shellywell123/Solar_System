@@ -75,7 +75,7 @@ class PySpace:
 
     ######################################################################################
             
-    def plot_orbit(self,ax,name,colour,orbit_radius,orbital_inclination,orbit_centre=[0,0,0]):
+    def plot_orbit(self,ax,name,colour,orbit_radius,orbital_inclination,orbit_centre=[0,0,0],label='yes'):
         """
         plots planet orbits
         """
@@ -97,8 +97,12 @@ class PySpace:
             x_data.append(x_orb)
             y_data.append(y_orb)
             z_data.append(z_orb)
-                
-        ax.plot(x_data,y_data,z_data,color=colour,linewidth=1,linestyle='--',label=name)
+        
+        if label == 'no':
+            ax.plot(x_data,y_data,z_data,color=colour,linewidth=1,linestyle='--')
+
+        if label == 'yes':
+            ax.plot(x_data,y_data,z_data,color=colour,linewidth=1,linestyle='--',label=name)
 
     ######################################################################################
     
@@ -154,6 +158,7 @@ class PySpace:
 
 
         image_file = 'Images/surfaces/{}.jpg'.format(name)
+        image_file = 'Images/surfaces/Moon.jpg'
         img = plt.imread(image_file)
 
         # define a grid matching the map size, subsample along with pixel    
@@ -183,7 +188,7 @@ class PySpace:
         
         x_orb,y_orb,z_orb = [0,0,0]         
         x_orb,y_orb,z_orb = self.tf.cartesian_transformation_radial(x_orb,y_orb,z_orb,host_orbit_radius,host_orbital_inclination,host_angluar_orbital_position)
-        self.plot_orbit(ax,name,'grey',moon_orbit_radius,moon_orbital_inclination,orbit_centre=[x_orb,y_orb,z_orb])
+        self.plot_orbit(ax,name,'grey',moon_orbit_radius,moon_orbital_inclination,orbit_centre=[x_orb,y_orb,z_orb],label='no')
  
         # planet to moon
         x,y,z = self.tf.cartesian_transformation_radial(x,y,z,moon_orbit_radius,moon_orbital_inclination,moon_angluar_orbital_position)
@@ -233,9 +238,10 @@ class PySpace:
         #body tilt
         x,y,z = self.tf.cartesian_transformation_obliquity(x,y,z,obliquity)
         
-        extras = ''
+        extras = str()
 
         if orbit_radius != 0:
+
             orbit_radius,obliquity,angluar_orbital_position=self.calculate_position_and_orientation(date,hour,orbit_radius,obliquity,orbit_duration_days)
             self.plot_orbit(ax,name,orbit_colour,orbit_radius,orbital_inclination)
             #orbital position
@@ -243,10 +249,11 @@ class PySpace:
 
             #check for moons
             if moons != 'no':
-                name,moon_radius,moon_orbit_radius = moons
-                moon_orbit_radius = moon_orbit_radius + body_radius
-                self.satelite(ax,name,moon_radius,moon_orbit_radius,orbit_radius,angluar_orbital_position,orbital_inclination)
-                extras = extras + '+ Moon'
+                for moon in moons:
+                    moon_name,moon_radius,moon_orbit_radius = moon
+                    moon_orbit_radius = moon_orbit_radius + body_radius
+                    self.satelite(ax,moon_name,moon_radius,moon_orbit_radius,orbit_radius,angluar_orbital_position,orbital_inclination)
+                    extras = extras + ' + ' + moon_name
 
             #check for rings
             if ring != 'no':            
@@ -254,10 +261,10 @@ class PySpace:
                 rmin = rmin+body_radius
                 rmax = rmax+body_radius
                 self.ring(ax,name,rmin,rmax,orbit_radius,angluar_orbital_position,orbital_inclination,ring_angle)
-                extras = extras + '+ Rings'
+                extras = extras + ' + Rings'
 
         ax.plot_surface(x.T, y.T, z.T, facecolors=img/255, cstride=1, rstride=1,zorder=2,alpha=.5)    
-        print(' - Created {} {}'.format(name,extras))
+        print(' - Created {}{}'.format(name,extras))
 
     ######################################################################################
     
@@ -348,21 +355,33 @@ class PySpace:
 
         # moon info
         #        name,moon_radius,moon_orbit_radius
-        e_moon = 'Moon',1737*eas,384402
+        e_moons = [['Moon',1737*eas,384402]]
+
+        #to be made accurate
+        m_moons = [['Desimos',1737*eas,384402],
+                    ['Phobos',1737*eas,384402]]
+
+        j_moons = [['Io',1737*eas,384402],
+                    ['Europa',1737*eas,384402],
+                    ['Gannymede',1737*eas,384402],
+                    ['Callisto',1737*eas,384402]]
+
+        s_moons = [['Enceladuus',1737*eas,384402],
+                    ['Titan',1737*eas,384402]]
 
         # ring info
         #        rmin                  ,rmax                  ,ring_angle
         s_ring = 7e3*sas,8e4*sas,1
 
-        #    planet(ax, name      ,orbit_colour   ,ring   ,moons   ,rsolar ,rplan      ,orbtilt)
+        #    planet(ax, name      ,orbit_colour   ,ring   ,moons  ,rsolar ,rplan      ,orbtilt)
         
         self.planet(ax ,'Sun'     ,'gold'        ,'no'   ,'no'    ,0      ,605000*sus ,0)
         self.planet(ax ,'Mercury' ,'peru'        ,'no'   ,'no'    ,46e6   ,2440*mes   ,7.005)
         self.planet(ax ,'Venus'   ,'goldenrod'   ,'no'   ,'no'    ,107e6  ,6052*ves   ,3.3947)
-        self.planet(ax ,'Earth'   ,'forestgreen' ,'no'   , e_moon ,149e6  ,6378*eas   ,0)
-        self.planet(ax ,'Mars'    ,'firebrick'   ,'no'   ,'no'    ,205e6  ,3397*mas   ,1.851)
-        self.planet(ax ,'Jupiter' ,'sandybrown'  ,'no'   ,'no'    ,741e6  ,71492*jus  ,1.305)
-        self.planet(ax ,'Saturn'  ,'yellow'      ,s_ring ,'no'    ,1.35e9 ,60268*sas  ,2.484)
+        self.planet(ax ,'Earth'   ,'forestgreen' ,'no'   ,e_moons ,149e6  ,6378*eas   ,0)
+        self.planet(ax ,'Mars'    ,'firebrick'   ,'no'   ,m_moons ,205e6  ,3397*mas   ,1.851)
+        self.planet(ax ,'Jupiter' ,'sandybrown'  ,'no'   ,j_moons ,741e6  ,71492*jus  ,1.305)
+        self.planet(ax ,'Saturn'  ,'yellow'      ,s_ring ,s_moons ,1.35e9 ,60268*sas  ,2.484)
         self.planet(ax ,'Uranus'  ,'powderblue'  ,'no'   ,'no'    ,2.75e9 ,25559*urs  ,0.770)
         self.planet(ax ,'Neptune' ,'dodgerblue'  ,'no'   ,'no'    ,4.45e9 ,24766*nes  ,1.769)
         self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no'   ,'no'    ,4.46e9 ,1150*pls   ,17.142) 
@@ -395,6 +414,7 @@ class PySpace:
             text.set_color('w')
         
         if show == 'show':
+            print('Opening GUI...')
             plt.show()
 
 ################################################################################
