@@ -1,8 +1,7 @@
 # Solar_System
 Interactive model of our Solar System plotted in matplotlib in Python 3. Fun side project made to learn more about 3D animation.
 
-![gif](Images/gifs/zoomout.gif)
-![screenshot](Images/screenshot.png)
+![gif](Images/gifs/spiralout.gif)
 
 ## Instructions:
 
@@ -37,6 +36,7 @@ foo@bar:~$ python3 main.py
 ## Current Features in Development
  - Moons being added
  - rings dont render infont/behind planets correctly
+ - cannot seem to stretch axis to fill full screen
 
 ## Potential Goals
  - Image overlays for planet surfaces (will allow for planet rotations to be visible)

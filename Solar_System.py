@@ -4,7 +4,8 @@ Created on Mon Dec 23 18:29:56 2019
 
 @author: B E N
 """
-
+import matplotlib
+matplotlib.use('TkAgg')
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from transforms import PyTransforms
@@ -48,7 +49,7 @@ class PySpace:
         plots planetary gas rings
         """
 
-        image_file = 'Images/surfaces/{}_Rings.jpg'.format(name)
+        image_file = 'Images/surfaces/planets/{}_Rings.jpg'.format(name)
         img        =  plt.imread(image_file)
 
         count = 100 
@@ -157,8 +158,8 @@ class PySpace:
         moon_angluar_orbital_position = 0
 
 
-        image_file = 'Images/surfaces/{}.jpg'.format(name)
-        image_file = 'Images/surfaces/Moon.jpg'
+        image_file = 'Images/surfaces/moons/{}.jpg'.format(name)
+       # image_file = 'Images/surfaces/moons/Moon.jpg'
         img = plt.imread(image_file)
 
         # define a grid matching the map size, subsample along with pixel    
@@ -166,7 +167,7 @@ class PySpace:
         rot = 0
         phi  = np.linspace(0+rot, 2*np.pi+rot, img.shape[1])
 
-        count = 180 # keep 180 points along theta and phi
+        count = 100 # keep 180 points along theta and phi
 
         theta_inds = np.linspace(0, img.shape[0] - 1, count).round().astype(int)
         phi_inds   = np.linspace(0, img.shape[1] - 1, count).round().astype(int)
@@ -211,7 +212,7 @@ class PySpace:
         obliquity           = self.tf.degrees_to_radians(obliquity)
         orbital_inclination = self.tf.degrees_to_radians(orbital_inclination)
     
-        image_file = 'Images/surfaces/{}.jpg'.format(name)
+        image_file = 'Images/surfaces/planets/{}.jpg'.format(name)
         img = plt.imread(image_file)
 
         # define a grid matching the map size, subsample along with pixel    
@@ -219,7 +220,7 @@ class PySpace:
         rot = 0
         phi  = np.linspace(0+rot, 2*np.pi+rot, img.shape[1])
 
-        count = 180 # keep 180 points along theta and phi
+        count = 100 # keep 180 points along theta and phi
 
         theta_inds = np.linspace(0, img.shape[0] - 1, count).round().astype(int)
         phi_inds   = np.linspace(0, img.shape[1] - 1, count).round().astype(int)
@@ -251,7 +252,6 @@ class PySpace:
             if moons != 'no':
                 for moon in moons:
                     moon_name,moon_radius,moon_orbit_radius = moon
-                    moon_orbit_radius = moon_orbit_radius + body_radius
                     self.satelite(ax,moon_name,moon_radius,moon_orbit_radius,orbit_radius,angluar_orbital_position,orbital_inclination)
                     extras = extras + ' + ' + moon_name
 
@@ -311,23 +311,45 @@ class PySpace:
         
     ######################################################################################
     
-    def solar_system(self,grid,max_lim=2.5e9,show='show'):
+    def solar_system(self,scaling='scaled',show='show',grid='nogrid',POV=[-60,30,2.5e9]):
         """
         creates solarsystems
         """
-       
-        fig = plt.figure(0)
+
+        #unpack camera Point Of View
+        azim    = POV[0]
+        elev    = POV[1]
+        max_lim = POV[2]
+
+        min_lim = -max_lim
+
+        fig = plt.figure(0,figsize=plt.figaspect(0.5)*1.5)
         fig.canvas.set_window_title('Solar System')
         
         try:
-            mng = plt.get_current_fig_manager()
-            mng.resize(*mng.window.maxsize())
+            # no point with this until can sort scaling issue
+            pass
+            # mng = plt.get_current_fig_manager()
+            # plt.rcParams['toolbar'] = 'None'
+            # #fig.canvas.window().statusBar().setVisible(False)
+            # # fig.canvas.toolbar.pack_forget()
+            # # mng.window.showMaximized()
+            # # mng.resize(*mng.window.maxsize())
+            # mng.full_screen_toggle()
+
+            # plt.rcParams['toolbar'] = 'None' # Remove tool bar (upper)
+            # fig.canvas.window().statusBar().setVisible(False) # Remove status bar (bottom)
+
+            # manager = plt.get_current_fig_manager()
+            # manager.full_screen_toggle()
         except:
+            print('failed to go full screen')
             pass
 
-        ax = fig.add_subplot(111, projection='3d')
+        ax = fig.add_subplot(111,projection='3d',azim=azim, elev=elev)
         fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
         fig.set_facecolor('black')
+        
         
         if grid != 'grid':
             ax.grid(False)
@@ -339,42 +361,53 @@ class PySpace:
         ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         
-        #if scaling != 'Accurate':
+        if scaling == 'Accurate':
+            sus = 1
+            mes = 1
+            ves = 1
+            eas = 1
+            mas = 1
+            jus = 1
+            sas = 1
+            urs = 1
+            nes = 1
+            pls = 1
+
+        if scaling != 'Accurate':
         # scalings (first two letters + s)
-        gen_scaling_factor = 2000
-        sus = gen_scaling_factor*0.015
-        mes = gen_scaling_factor
-        ves = gen_scaling_factor
-        eas = gen_scaling_factor
-        mas = gen_scaling_factor
-        jus = gen_scaling_factor
-        sas = gen_scaling_factor
-        urs = gen_scaling_factor
-        nes = gen_scaling_factor
-        pls = gen_scaling_factor
+            gen_scaling_factor = 2000
+            sus = gen_scaling_factor*0.015
+            mes = gen_scaling_factor
+            ves = gen_scaling_factor
+            eas = gen_scaling_factor
+            mas = gen_scaling_factor
+            jus = gen_scaling_factor
+            sas = gen_scaling_factor
+            urs = gen_scaling_factor
+            nes = gen_scaling_factor
+            pls = gen_scaling_factor
 
         # moon info
-        #        name,moon_radius,moon_orbit_radius
-        e_moons = [['Moon',1737*eas,384402]]
+        #            name       ,moon_radius  ,moon_orbit_radius (semi maj)
+        e_moons = [['Moon'      ,1737*eas     ,384402]]
 
         #to be made accurate
-        m_moons = [['Desimos',1737*eas,384402],
-                    ['Phobos',1737*eas,384402]]
+        m_moons = [['Deimos'    ,6*mas     ,23463],
+                   ['Phobos'    ,11*mas     ,9376]]
 
-        j_moons = [['Io',1737*eas,384402],
-                    ['Europa',1737*eas,384402],
-                    ['Gannymede',1737*eas,384402],
-                    ['Callisto',1737*eas,384402]]
+        j_moons = [['Io'        ,1821*jus     ,421700],
+                   ['Europa'    ,1560*jus     ,670900],
+                   ['Gannymede' ,2634*jus     ,1070400],
+                   ['Callisto'  ,2410*jus     ,1882700]]
 
-        s_moons = [['Enceladuus',1737*eas,384402],
-                    ['Titan',1737*eas,384402]]
+        s_moons = [['Enceladus' ,521*sas     ,237948],
+                   ['Titan'     ,2574*sas     ,1221870]]
 
         # ring info
         #        rmin                  ,rmax                  ,ring_angle
         s_ring = 7e3*sas,8e4*sas,1
 
         #    planet(ax, name      ,orbit_colour   ,ring   ,moons  ,rsolar ,rplan      ,orbtilt)
-        
         self.planet(ax ,'Sun'     ,'gold'        ,'no'   ,'no'    ,0      ,605000*sus ,0)
         self.planet(ax ,'Mercury' ,'peru'        ,'no'   ,'no'    ,46e6   ,2440*mes   ,7.005)
         self.planet(ax ,'Venus'   ,'goldenrod'   ,'no'   ,'no'    ,107e6  ,6052*ves   ,3.3947)
@@ -386,11 +419,8 @@ class PySpace:
         self.planet(ax ,'Neptune' ,'dodgerblue'  ,'no'   ,'no'    ,4.45e9 ,24766*nes  ,1.769)
         self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no'   ,'no'    ,4.46e9 ,1150*pls   ,17.142) 
         
-        self.asteroid_belt(ax,3e9,45e8,1000,25)
-
-        # max_lim = 205e6
-        min_lim = -max_lim
-        
+        # non planet objects
+        self.asteroid_belt(ax,3e9,45e8,1000,25)      
         self.starry_night(ax,max_lim*5,2000)
         
         ax.set_xlim3d([min_lim,max_lim])
@@ -402,12 +432,17 @@ class PySpace:
         ax.set_zlim3d([min_lim,max_lim])
         ax.set_zlabel('km')
         
+      #  ax.set_box_aspect((1, 1, 0.25))
+
         ax.spines['bottom'].set_color(  'lime')
         ax.spines['top'].set_color(     'lime')
         ax.xaxis.label.set_color(       'lime')
+
         ax.tick_params(axis='x', colors='lime')
         ax.tick_params(axis='y', colors='lime')
         ax.tick_params(axis='z', colors='lime')
+        ax.auto_scale_xyz(1080,1920)
+    #    ax.set_aspect(aspect='equal')
         
         leg = ax.legend(loc='upper left', facecolor='none')
         for text in leg.get_texts():
@@ -416,6 +451,7 @@ class PySpace:
         if show == 'show':
             print('Opening GUI...')
             plt.show()
+            print(' ...Closed.')
 
 ################################################################################
 # End of class
