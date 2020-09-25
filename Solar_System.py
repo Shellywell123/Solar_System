@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*
-"""
-Created on Mon Dec 23 18:29:56 2019
-
-@author: B E N
-"""
 import matplotlib
 matplotlib.use('TkAgg')
 from mpl_toolkits.mplot3d import Axes3D
@@ -44,12 +38,31 @@ class PySpace:
 
     ######################################################################################
     
-    def ring(self,ax,name,rmin,rmax,orbit_radius,angluar_orbital_position,orbital_inclination,ring_angle):
+    def rings_dict(self,ax,rings_info,host_info):
         """
         plots planetary gas rings
         """
 
-        image_file = 'Images/surfaces/planets/{}_Rings.jpg'.format(name)
+        ##############################################################
+        # unpack rings info
+        ##############################################################
+        
+        rmin             = rings_info['minimum_ring_radius']
+        rmax             = rings_info['maximum_ring_radius']
+        ring_inclination = rings_info['ring_inclination']
+
+        ##############################################################
+        # unpack host info
+        ##############################################################
+
+        host_name                     = host_info['host_name']
+        host_orbit_radius             = host_info['host_orbit_radius']
+        host_angluar_orbital_position = host_info['host_angluar_orbital_position']
+        host_orbital_inclination      = host_info['host_orbital_inclination']
+
+        moon_orbital_inclination      = 0
+        moon_angluar_orbital_position = 0
+        image_file = 'Images/surfaces/planets/{}_Rings.jpg'.format(host_name)
         img        =  plt.imread(image_file)
 
         count = 100 
@@ -70,8 +83,7 @@ class PySpace:
         h = np.empty(y.shape)
         h.fill(5)
 
-        x,y,z = self.tf.cartesian_transformation_radial(x,y,h,orbit_radius,orbital_inclination,angluar_orbital_position)
-
+        x,y,z = self.tf.cartesian_transformation_radial(x,y,h,host_orbit_radius,host_orbital_inclination,host_angluar_orbital_position)
         ax.plot_surface(x,y,z, facecolors=img/255, cstride=1, rstride=1,zorder=1,alpha=.5)
 
     ######################################################################################
@@ -147,18 +159,30 @@ class PySpace:
             ax.scatter(x_ast,y_ast,z_ast,color='grey',s=s)
         print(' - Created Asteroid Belt')
 
-    ######################################################################################
+######################################################################################
 
-    def satelite(self,ax,name,moon_radius,moon_orbit_radius,host_orbit_radius,host_angluar_orbital_position,host_orbital_inclination):
+    def satelite_dict(self,ax,moon_info,host_info):
         """
         makes a satelite to a planet
         """
+
+        ##############################################################
+        # unpack moon info
+        ##############################################################
         
+        moon_name         = moon_info['moon_name']
+        moon_radius       = moon_info['moon_radius']
+        moon_orbit_radius = moon_info['moon_orbit_radius']
+
+        host_orbit_radius             = host_info['host_orbit_radius']
+        host_angluar_orbital_position = host_info['host_angluar_orbital_position']
+        host_orbital_inclination      = host_info['host_orbital_inclination']
+
         moon_orbital_inclination      = 0
         moon_angluar_orbital_position = 0
 
 
-        image_file = 'Images/surfaces/moons/{}.jpg'.format(name)
+        image_file = 'Images/surfaces/moons/{}.jpg'.format(moon_name)
        # image_file = 'Images/surfaces/moons/Moon.jpg'
         img = plt.imread(image_file)
 
@@ -179,7 +203,9 @@ class PySpace:
 
         theta,phi = np.meshgrid(theta, phi)
         
-        # transformations
+        ##############################################################
+        # coord trandforms
+        ##############################################################
 
         #spherical
         x,y,z = self.tf.spherical_to_cartesian(theta,phi,moon_radius)
@@ -189,7 +215,7 @@ class PySpace:
         
         x_orb,y_orb,z_orb = [0,0,0]         
         x_orb,y_orb,z_orb = self.tf.cartesian_transformation_radial(x_orb,y_orb,z_orb,host_orbit_radius,host_orbital_inclination,host_angluar_orbital_position)
-        self.plot_orbit(ax,name,'grey',moon_orbit_radius,moon_orbital_inclination,orbit_centre=[x_orb,y_orb,z_orb],label='no')
+        self.plot_orbit(ax,moon_name,'grey',moon_orbit_radius,moon_orbital_inclination,orbit_centre=[x_orb,y_orb,z_orb],label='no')
  
         # planet to moon
         x,y,z = self.tf.cartesian_transformation_radial(x,y,z,moon_orbit_radius,moon_orbital_inclination,moon_angluar_orbital_position)
@@ -198,17 +224,32 @@ class PySpace:
         
     ######################################################################################
      
-    def planet(self,ax,name,orbit_colour,ring,moons,orbit_radius,body_radius,orbital_inclination):
+    def planet_dict(self,ax,planet_info):
         """
         plots planets
         """
 
+        ##############################################################
+        # unpack planet info
+        ##############################################################
+        
+        name                = planet_info['name']
+        orbit_colour        = planet_info['orbit_colour']
+        rings_info          = planet_info['rings_info']
+        moons_info          = planet_info['moons_info']
+        orbit_radius        = planet_info['orbit_radius']
+        body_radius         = planet_info['body_radius']
+        orbital_inclination = planet_info['orbital_inclination']
+                            
         date = '1'
         hour = 1
         obliquity = 0
         orbit_duration_days = 1
 
-        # make angles rads
+        ##############################################################
+        # convert angles to radians
+        ##############################################################
+        
         obliquity           = self.tf.degrees_to_radians(obliquity)
         orbital_inclination = self.tf.degrees_to_radians(orbital_inclination)
     
@@ -232,7 +273,9 @@ class PySpace:
 
         theta,phi = np.meshgrid(theta, phi)
         
-        # transformations
+        ##############################################################
+        # coord transforms
+        ##############################################################
 
         #spherical
         x,y,z = self.tf.spherical_to_cartesian(theta,phi,body_radius)
@@ -248,25 +291,46 @@ class PySpace:
             #orbital position
             x,y,z = self.tf.cartesian_transformation_radial(x,y,z,orbit_radius,orbital_inclination,angluar_orbital_position)
 
-            #check for moons
-            if moons != 'no':
-                for moon in moons:
-                    moon_name,moon_radius,moon_orbit_radius = moon
-                    self.satelite(ax,moon_name,moon_radius,moon_orbit_radius,orbit_radius,angluar_orbital_position,orbital_inclination)
-                    extras = extras + ' + ' + moon_name
+            ##################################################
+            # moons check
+            ##################################################
+        
+            if moons_info != 'no':
+                for moon_info in moons_info:
 
-            #check for rings
-            if ring != 'no':            
-                rmin,rmax,ring_angle = ring
-                rmin = rmin+body_radius
-                rmax = rmax+body_radius
-                self.ring(ax,name,rmin,rmax,orbit_radius,angluar_orbital_position,orbital_inclination,ring_angle)
+                    host_info = {'host_name'                    : name,
+                                'host_orbit_radius'            : orbit_radius,
+                                'host_angluar_orbital_position' : angluar_orbital_position,
+                                'host_orbital_inclination'      : orbital_inclination}
+
+                    #self.satelite(ax,moon_name,moon_radius,moon_orbit_radius,orbit_radius,angluar_orbital_position,orbital_inclination)
+                    self.satelite_dict(ax,moon_info,host_info)
+
+                    moon_name = moon_info['moon_name']
+                    extras    = extras + ' + ' + moon_name
+
+            ##################################################
+            # rings check
+            ##################################################
+        
+            if rings_info != 'no':            
+
+                rings_info['minimum_ring_radius'] = rings_info['minimum_ring_radius'] + body_radius
+                rings_info['maximum_ring_radius'] = rings_info['maximum_ring_radius'] + body_radius
+           
+                host_info = {'host_name'                    : name,
+                            'host_orbit_radius'            : orbit_radius,
+                            'host_angluar_orbital_position' : angluar_orbital_position,
+                            'host_orbital_inclination'      : orbital_inclination}
+
+               # self.ring(ax,name,rmin,rmax,orbit_radius,angluar_orbital_position,orbital_inclination,ring_angle)
+                self.rings_dict(ax,rings_info,host_info)
                 extras = extras + ' + Rings'
 
         ax.plot_surface(x.T, y.T, z.T, facecolors=img/255, cstride=1, rstride=1,zorder=2,alpha=.5)    
         print(' - Created {}{}'.format(name,extras))
 
-    ######################################################################################
+    #####################################################
     
     def starry_night(self,ax,max_lim,num_of_Stars):
         """
@@ -276,12 +340,6 @@ class PySpace:
         
         random.seed(1)
 
-        ax.set_facecolor('black')
-        
-        ax.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        
         x1 = []
         x2 = []
         x3 = []
@@ -311,15 +369,18 @@ class PySpace:
         
     ######################################################################################
     
-    def solar_system(self,scaling='scaled',show='show',grid='nogrid',POV=[-60,30,2.5e9]):
+    def solar_system(self,scaling='scaled',show='show',grid='nogrid',POV={'azim':-60,'elev':30,'max_lim':2.5e9}):
         """
         creates solarsystems
-        """
+        """        
 
-        #unpack camera Point Of View
-        azim    = POV[0]
-        elev    = POV[1]
-        max_lim = POV[2]
+        ##############################################################
+        # unpack camera point of view
+        ##############################################################
+        
+        azim    = POV['azim']
+        elev    = POV['elev']
+        max_lim = POV['max_lim']
 
         min_lim = -max_lim
 
@@ -348,80 +409,39 @@ class PySpace:
 
         ax = fig.add_subplot(111,projection='3d',azim=azim, elev=elev)
         fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
+
+        ##############################################################
+        # plot background
+        ##############################################################
+        
         fig.set_facecolor('black')
-        
-        
-        if grid != 'grid':
-            ax.grid(False)
-        else:
-            plt.rcParams['grid.color'] = "darkgreen"
-            ax.grid(color='green',linewdith=1, alpha=0.1)
-        
+        ax.set_facecolor('black')
         ax.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         
-        if scaling == 'Accurate':
-            sus = 1
-            mes = 1
-            ves = 1
-            eas = 1
-            mas = 1
-            jus = 1
-            sas = 1
-            urs = 1
-            nes = 1
-            pls = 1
-
-        if scaling != 'Accurate':
-        # scalings (first two letters + s)
-            gen_scaling_factor = 2000
-            sus = gen_scaling_factor*0.015
-            mes = gen_scaling_factor
-            ves = gen_scaling_factor
-            eas = gen_scaling_factor
-            mas = gen_scaling_factor
-            jus = gen_scaling_factor
-            sas = gen_scaling_factor
-            urs = gen_scaling_factor
-            nes = gen_scaling_factor
-            pls = gen_scaling_factor
-
-        # moon info
-        #            name       ,moon_radius  ,moon_orbit_radius (semi maj)
-        e_moons = [['Moon'      ,1737*eas     ,384402]]
-
-        #to be made accurate
-        m_moons = [['Deimos'    ,6*mas     ,23463],
-                   ['Phobos'    ,11*mas     ,9376]]
-
-        j_moons = [['Io'        ,1821*jus     ,421700],
-                   ['Europa'    ,1560*jus     ,670900],
-                   ['Gannymede' ,2634*jus     ,1070400],
-                   ['Callisto'  ,2410*jus     ,1882700]]
-
-        s_moons = [['Enceladus' ,521*sas     ,237948],
-                   ['Titan'     ,2574*sas     ,1221870]]
-
-        # ring info
-        #        rmin                  ,rmax                  ,ring_angle
-        s_ring = 7e3*sas,8e4*sas,1
-
-        #    planet(ax, name      ,orbit_colour   ,ring   ,moons  ,rsolar ,rplan      ,orbtilt)
-        self.planet(ax ,'Sun'     ,'gold'        ,'no'   ,'no'    ,0      ,605000*sus ,0)
-        self.planet(ax ,'Mercury' ,'peru'        ,'no'   ,'no'    ,46e6   ,2440*mes   ,7.005)
-        self.planet(ax ,'Venus'   ,'goldenrod'   ,'no'   ,'no'    ,107e6  ,6052*ves   ,3.3947)
-        self.planet(ax ,'Earth'   ,'forestgreen' ,'no'   ,e_moons ,149e6  ,6378*eas   ,0)
-        self.planet(ax ,'Mars'    ,'firebrick'   ,'no'   ,m_moons ,205e6  ,3397*mas   ,1.851)
-        self.planet(ax ,'Jupiter' ,'sandybrown'  ,'no'   ,j_moons ,741e6  ,71492*jus  ,1.305)
-        self.planet(ax ,'Saturn'  ,'yellow'      ,s_ring ,s_moons ,1.35e9 ,60268*sas  ,2.484)
-        self.planet(ax ,'Uranus'  ,'powderblue'  ,'no'   ,'no'    ,2.75e9 ,25559*urs  ,0.770)
-        self.planet(ax ,'Neptune' ,'dodgerblue'  ,'no'   ,'no'    ,4.45e9 ,24766*nes  ,1.769)
-        self.planet(ax ,'Pluto'   ,'dimgrey'     ,'no'   ,'no'    ,4.46e9 ,1150*pls   ,17.142) 
+        ##############################################################
+        # make solar system
+        ##############################################################
         
-        # non planet objects
-        self.asteroid_belt(ax,3e9,45e8,1000,25)      
-        self.starry_night(ax,max_lim*5,2000)
+        from data import PyData
+        d = PyData(scaling)
+        sun      = self.planet_dict(ax,d.sun_info)
+        mercury  = self.planet_dict(ax,d.mercury_info)
+        venus    = self.planet_dict(ax,d.venus_info)
+        earth    = self.planet_dict(ax,d.earth_info)
+        mars     = self.planet_dict(ax,d.mars_info)
+        ast_belt = self.asteroid_belt(ax,3e9,45e8,1000,25)  
+        jupiter  = self.planet_dict(ax,d.jupiter_info)
+        saturn   = self.planet_dict(ax,d.saturn_info)
+        uranus   = self.planet_dict(ax,d.uranus_info)
+        neptune  = self.planet_dict(ax,d.neptune_info)
+        pluto    = self.planet_dict(ax,d.pluto_info)
+        stars    = self.starry_night(ax,max_lim*5,2000)
+        
+        ##############################################################
+        # set plot lims
+        ##############################################################
         
         ax.set_xlim3d([min_lim,max_lim])
         ax.set_xlabel('km')
@@ -432,7 +452,15 @@ class PySpace:
         ax.set_zlim3d([min_lim,max_lim])
         ax.set_zlabel('km')
         
-      #  ax.set_box_aspect((1, 1, 0.25))
+        ##############################################################
+        # axis preferences
+        ##############################################################
+        
+        if grid != 'grid':
+            ax.grid(False)
+        else:
+            plt.rcParams['grid.color'] = "darkgreen"
+            ax.grid(color='green',linewdith=1, alpha=0.1)
 
         ax.spines['bottom'].set_color(  'lime')
         ax.spines['top'].set_color(     'lime')
@@ -444,9 +472,17 @@ class PySpace:
         ax.auto_scale_xyz(1080,1920)
     #    ax.set_aspect(aspect='equal')
         
+        ##############################################################
+        # legend preferences
+        ##############################################################
+        
         leg = ax.legend(loc='upper left', facecolor='none')
         for text in leg.get_texts():
             text.set_color('w')
+        
+        ##############################################################
+        # show option
+        ##############################################################
         
         if show == 'show':
             print('Opening GUI...')

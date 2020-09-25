@@ -42,7 +42,12 @@ class PyAnimate:
 
         i = 1
         for azim in list(np.linspace(0,360,num_of_frames)):
-            self.ss.solar_system(scaling='notoscale',POV=[azim,30,15e7],show='noshow')
+
+            POV = {'azim'     : azim,
+                    'elev'    : 30,
+                    'max_lim' : 15e7}
+
+            self.ss.solar_system(scaling='notoscale',POV=POV,show='noshow')
 
             if i <= 9:
                 name_i = '0'+str(i)
@@ -66,7 +71,12 @@ class PyAnimate:
 
         i = 1
         for max_lim in list(np.geomspace(6.5e7, 3e9, num=num_of_frames)):
-            self.ss.solar_system(scaling='notoscale',POV=[-60,30,max_lim],show='noshow')
+
+            POV = {'azim'     : -60,
+                    'elev'    : 30,
+                    'max_lim' : max_lim}
+
+            self.ss.solar_system(scaling='notoscale',POV=POV,show='noshow')
 
             if i <= 9:
                 name_i = '0'+str(i)
@@ -95,10 +105,11 @@ class PyAnimate:
 
         for i in range(0,num_of_frames):
 
-            azim    = azim_list[i]
-            max_lim = max_lim_list[i]
+            POV = {'azim'     : azim_list[i],
+                    'elev'    : 30,
+                    'max_lim' : max_lim_list[i]}
 
-            self.ss.solar_system(scaling='notoscale',POV=[azim,30,max_lim],show='noshow')
+            self.ss.solar_system(scaling='notoscale',POV=POV,show='noshow')
 
             if i <= 9:
                 name_i = '0'+str(i)
