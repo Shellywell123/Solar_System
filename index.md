@@ -4,6 +4,7 @@ You can use the [editor on GitHub](https://github.com/Shellywell123/Solar_System
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
+![gif](https://github.com/Shellywell123/Solar_System/Images/gifs/spiralout.gif)
 ### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
