@@ -29,9 +29,18 @@ class PySpace:
         """
         returns live time and date for uk
         """
-        date     = str(os.popen("date +%D").readlines())[2:-4]
-        time     = str(os.popen("date +%T").readlines())[2:-7]
-        timezone = str(os.popen("date +%:z").readlines())[2:-7]
+
+        # if running on windows
+        if os.name == 'nt':
+            date     = 'TODO'
+            time     = 'TODO'
+            timezone = 'TODO'
+
+        # if running on linux
+        else:
+            date     = str(os.popen("date +%D").readlines())[2:-4]
+            time     = str(os.popen("date +%T").readlines())[2:-7]
+            timezone = str(os.popen("date +%:z").readlines())[2:-7]
 
         live = time + ' ' + timezone + ' ' + date
         return live
@@ -240,6 +249,8 @@ class PySpace:
         orbit_radius        = planet_info['orbit_radius']
         body_radius         = planet_info['body_radius']
         orbital_inclination = planet_info['orbital_inclination']
+        init_ang_orbit_pos  = planet_info['init_orbit_position']
+        orb_len_earth_yrs   = planet_info['orbit_len_earth_yrs']
                             
         date = '1'
         hour = 1
@@ -286,7 +297,11 @@ class PySpace:
 
         if orbit_radius != 0:
 
+            # in future this function will be used to move planets based on a date 
             orbit_radius,obliquity,angluar_orbital_position=self.calculate_position_and_orientation(date,hour,orbit_radius,obliquity,orbit_duration_days)
+            # using a preset stationary position for now
+            angluar_orbital_position = init_ang_orbit_pos
+
             self.plot_orbit(ax,name,orbit_colour,orbit_radius,orbital_inclination)
             #orbital position
             x,y,z = self.tf.cartesian_transformation_radial(x,y,z,orbit_radius,orbital_inclination,angluar_orbital_position)
@@ -384,28 +399,17 @@ class PySpace:
 
         min_lim = -max_lim
 
-        fig = plt.figure(0,figsize=plt.figaspect(0.5)*1.5)
+        #plt.rcParams['toolbar'] = 'None'
+        plt.rcParams['grid.color'] = "darkgreen"
+        fig = plt.figure(0,figsize=[16,8])
         fig.canvas.set_window_title('Solar System')
         
-        try:
-            # no point with this until can sort scaling issue
+        try:            
+            mng = plt.get_current_fig_manager()
             pass
-            # mng = plt.get_current_fig_manager()
-            # plt.rcParams['toolbar'] = 'None'
-            # #fig.canvas.window().statusBar().setVisible(False)
-            # # fig.canvas.toolbar.pack_forget()
-            # # mng.window.showMaximized()
-            # # mng.resize(*mng.window.maxsize())
-            # mng.full_screen_toggle()
-
-            # plt.rcParams['toolbar'] = 'None' # Remove tool bar (upper)
-            # fig.canvas.window().statusBar().setVisible(False) # Remove status bar (bottom)
-
-            # manager = plt.get_current_fig_manager()
-            # manager.full_screen_toggle()
+            #mng.full_screen_toggle()
         except:
             print('failed to go full screen')
-            pass
 
         ax = fig.add_subplot(111,projection='3d',azim=azim, elev=elev)
         fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
@@ -443,14 +447,24 @@ class PySpace:
         # set plot lims
         ##############################################################
         
-        ax.set_xlim3d([min_lim,max_lim])
         ax.set_xlabel('km')
-        
-        ax.set_ylim3d([min_lim,max_lim])
         ax.set_ylabel('km')
-        
-        ax.set_zlim3d([min_lim,max_lim])
         ax.set_zlabel('km')
+
+        # screen aspect ratio (to be automized)
+        #aspect_ratio = [1920,1080]
+        aspect_ratio = [2,1]
+        #aspect ratio scaling
+        asr = float(aspect_ratio[1]/aspect_ratio[0])
+        #print(max_lim*asr)
+
+        ax.auto_scale_xyz([min_lim, max_lim],
+                            [min_lim, max_lim], 
+                            [min_lim*asr, max_lim*asr])
+       # ax.autoscale_view(scalex=True, scaley=True, scalez=False)
+        fig.tight_layout()
+       
+        #print(ax.get_w_lims())
         
         ##############################################################
         # axis preferences
@@ -459,7 +473,6 @@ class PySpace:
         if grid != 'grid':
             ax.grid(False)
         else:
-            plt.rcParams['grid.color'] = "darkgreen"
             ax.grid(color='green',linewdith=1, alpha=0.1)
 
         ax.spines['bottom'].set_color(  'lime')
@@ -469,9 +482,7 @@ class PySpace:
         ax.tick_params(axis='x', colors='lime')
         ax.tick_params(axis='y', colors='lime')
         ax.tick_params(axis='z', colors='lime')
-        ax.auto_scale_xyz(1080,1920)
-    #    ax.set_aspect(aspect='equal')
-        
+
         ##############################################################
         # legend preferences
         ##############################################################

@@ -100,7 +100,7 @@ class PyAnimate:
         """
 
         i = 1
-        max_lim_list = list(np.geomspace(12e6, 1e10,num_of_frames))
+        max_lim_list = list(np.geomspace(2e7, 1e10,num_of_frames))
         azim_list    = list(np.linspace(-180,180,num_of_frames))
 
         for i in range(0,num_of_frames):

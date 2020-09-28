@@ -32,6 +32,7 @@ foo@bar:~$ python3 main.py
 - Rendered surfaces
 - Parallax background stars
 - Adjustable orbits
+- Runs on both windows and linux
 
 ## Current Features in Development
  - Moons being added

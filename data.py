@@ -97,7 +97,9 @@ class PyData():
                     'moons_info'          : 'no',
                     'orbit_radius'        : 0,
                     'body_radius'         : 605000*self.sun_scaling_factor,
-                    'orbital_inclination' : 0
+                    'orbital_inclination' : 0,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
         ########################################################################
@@ -111,7 +113,9 @@ class PyData():
                     'moons_info'          : 'no',
                     'orbit_radius'        : 46e6,
                     'body_radius'         : 2440*self.mercury_scaling_factor,
-                    'orbital_inclination' : 7.005
+                    'orbital_inclination' : 7.005,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
         self.venus_info={
@@ -121,7 +125,9 @@ class PyData():
                     'moons_info'          : 'no',
                     'orbit_radius'        : 107e6,
                     'body_radius'         : 6052*self.venus_scaling_factor,
-                    'orbital_inclination' : 3.3947
+                    'orbital_inclination' : 3.3947,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
         self.earth_info={
@@ -131,7 +137,9 @@ class PyData():
                     'moons_info'          : self.earth_moons,
                     'orbit_radius'        : 149e6,
                     'body_radius'         : 6378*self.earth_scaling_factor,
-                    'orbital_inclination' : 0
+                    'orbital_inclination' : 0,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
         self.mars_info={
@@ -141,7 +149,9 @@ class PyData():
                     'moons_info'          : self.m_moons,
                     'orbit_radius'        : 205e6,
                     'body_radius'         : 3397*self.mars_scaling_factor,
-                    'orbital_inclination' : 1.851
+                    'orbital_inclination' : 1.851,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
         self.jupiter_info={
@@ -151,7 +161,9 @@ class PyData():
                     'moons_info'          : self.jupiter_moons,
                     'orbit_radius'        : 741e6,
                     'body_radius'         : 71492*self.jupiter_scaling_factor,
-                    'orbital_inclination' : 1.305
+                    'orbital_inclination' : 1.305,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
         self.saturn_info={
@@ -161,7 +173,9 @@ class PyData():
                     'moons_info'          : self.saturn_moons,
                     'orbit_radius'        : 1.35e9,
                     'body_radius'         : 60268*self.saturn_scaling_factor,
-                    'orbital_inclination' : 2.484
+                    'orbital_inclination' : 2.484,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
         self.uranus_info={
@@ -171,7 +185,9 @@ class PyData():
                     'moons_info'          : 'no',
                     'orbit_radius'        : 2.75e9,
                     'body_radius'         : 25559*self.uranus_scaling_factor,
-                    'orbital_inclination' : 0.77
+                    'orbital_inclination' : 0.77,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
        
         self.neptune_info={
@@ -181,7 +197,9 @@ class PyData():
                     'moons_info'          : 'no',
                     'orbit_radius'        : 4.45e9,
                     'body_radius'         : 24766*self.neptune_scaling_factor,
-                    'orbital_inclination' : 1.769
+                    'orbital_inclination' : 1.769,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
         self.pluto_info={
@@ -191,7 +209,9 @@ class PyData():
                     'moons_info'          : 'no',
                     'orbit_radius'        : 4.46e9,
                     'body_radius'         : 1150*self.pluto_scaling_factor,
-                    'orbital_inclination' : 17.142
+                    'orbital_inclination' : 17.142,
+                    'init_orbit_position' : 0,
+                    'orbit_len_earth_yrs' : 1
                     }
 
 ################################################################################
