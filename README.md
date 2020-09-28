@@ -1,23 +1,21 @@
 # Solar_System
-Interactive model of our Solar System plotted in matplotlib in Python 3. Fun side project made to learn more about 3D animation.
+Interactive 3D model of our Solar System plotted in matplotlib. Fun side project made to learn more about 3D animation in Python 3.
 
 ![gif](Images/gifs/spiralout.gif)
 
 ## Instructions:
 
 ### How to setup:
-In terminal/cmd prompt, clone the repository into you desired location:
+In terminal/cmd prompt, clone the repository into the desired location:
 ```bash
 foo@bar:~$ git clone https://github.com/Shellywell123/Solar_System.git
 ```
 
 ### How to update:
-Navigate to program directory:
+Navigate to program directory & pull the latest version of the repo:
 ```bash
 foo@bar:~$ cd Solar_System/
-```
-In terminal/cmd prompt, pull the latest version:
-```bash
+
 foo@bar:~$ git pull
 ```
 
@@ -28,26 +26,24 @@ foo@bar:~$ python3 main.py
 ```
 
 ## Features
-- Accurate orbital distances with scaled planet sizes
-- Rendered surfaces
+- Approximately accurate orbital distances with scaled planet sizes
+- Rendered surfaces of planets, moons and gas rings
+- Asteroid belts
 - Parallax background stars
-- Adjustable orbits
-- Runs on both windows and linux
+- Runs on both Windows and Linux systems
 
 ## Current Features in Development
- - Moons being added
- - rings dont render infont/behind planets correctly
- - cannot seem to stretch axis to fill full screen
+ - live positioning of objects
+ - Rings don't currently render infont/behind planets correctly
+ - Using aspect ratio 1:2 as axis doesnt scale with screen size
 
 ## Potential Goals
  - Image overlays for planet surfaces (will allow for planet rotations to be visible)
- - live position of planets (animated + option to pan through time)
+ - Live position of planets (animated + option to pan through time)
  - Make each dash of a planets orbit represent one day 
  - Accurate eliptical orbits with processions (all orbits currently fixed inline with x axis)
- - Accurate moons and gas rings
  - Approximate star positions and brightnesses in background
- - Add satelites and space mission trajectories
- - Add asteroid belt
+ - Add man-made satelites and space mission trajectories
 
 # Sources
 [planet image source](https://www.solarsystemscope.com/textures/)\
