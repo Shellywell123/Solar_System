@@ -38,42 +38,61 @@ class PyData():
             self.pluto_scaling_factor   = gen_scaling_factor
 
         ########################################################################
+        # asteroid data
+        ########################################################################
+
+        self.asteroid_belt_info={
+					'minimum_orbit_radius' : 3e9,
+					'maximum_orbit_radius' : 45e8,
+					'num_of_asteroids'     : 1000,
+					'orbital_inclination'  : 25}
+
+        ########################################################################
         # Moon data
         ########################################################################
 
-        self.earth_moons = [{'moon_name'         : 'Moon',
+        self.earth_moons = [{
+        			'moon_name'         : 'Moon',
                     'moon_radius'       : 1737*self.earth_scaling_factor,
                     'moon_orbit_radius' : 384402}]
 
-        self.m_moons = [{'moon_name'         : 'Deimos',
+        self.m_moons = [{
+					'moon_name'         : 'Deimos',
                     'moon_radius'       : 6*self.mars_scaling_factor,
                     'moon_orbit_radius' : 23463},
 
-                   {'moon_name'         : 'Phobos',
-                   'moon_radius'       : 11*self.mars_scaling_factor,
-                   'moon_orbit_radius' : 9376}]
+                   {
+                    'moon_name'         : 'Phobos',
+                    'moon_radius'       : 11*self.mars_scaling_factor,
+                    'moon_orbit_radius' : 9376}]
 
-        self.jupiter_moons = [{'moon_name'         : 'Io',
+        self.jupiter_moons = [{
+        			'moon_name'         : 'Io',
                     'moon_radius'       : 1821*self.jupiter_scaling_factor,
                     'moon_orbit_radius' : 421700},
 
-                   {'moon_name'         : 'Europa',
-                   'moon_radius'       : 1560*self.jupiter_scaling_factor,
-                   'moon_orbit_radius' : 670900},
+                   {
+                    'moon_name'         : 'Europa',
+                    'moon_radius'       : 1560*self.jupiter_scaling_factor,
+                    'moon_orbit_radius' : 670900},
 
-                   {'moon_name'         : 'Gannymede',
-                   'moon_radius'       : 2634*self.jupiter_scaling_factor,
-                   'moon_orbit_radius' : 1070400},
+                   {
+                    'moon_name'         : 'Gannymede',
+                    'moon_radius'       : 2634*self.jupiter_scaling_factor,
+                    'moon_orbit_radius' : 1070400},
 
-                   {'moon_name'         : 'Callisto',
-                   'moon_radius'       : 2410*self.jupiter_scaling_factor,
-                   'moon_orbit_radius' : 1882700}]
+                   {
+                    'moon_name'         : 'Callisto',
+                    'moon_radius'       : 2410*self.jupiter_scaling_factor,
+					'moon_orbit_radius' : 1882700}]
 
-        self.saturn_moons = [{'moon_name'         : 'Enceladus',
+        self.saturn_moons = [{
+        			'moon_name'         : 'Enceladus',
                     'moon_radius'       : 521*self.saturn_scaling_factor,
                     'moon_orbit_radius' : 237948},
 
-                   {'moon_name'         : 'Titan',
+                   {
+                    'moon_name'         : 'Titan',
                     'moon_radius'       : 2574*self.saturn_scaling_factor,
                     'moon_orbit_radius' : 1221870}]
 
@@ -81,7 +100,8 @@ class PyData():
         # Gas Rings data
         ########################################################################
 
-        self.saturn_rings = {'minimum_ring_radius'  : 7e3*self.saturn_scaling_factor,
+        self.saturn_rings = {
+        			'minimum_ring_radius' : 7e3*self.saturn_scaling_factor,
                     'maximum_ring_radius' : 8e4*self.saturn_scaling_factor,
                     'ring_inclination'    : 1}
 

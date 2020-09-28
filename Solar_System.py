@@ -149,10 +149,19 @@ class PySpace:
 
     ######################################################################################
 
-    def asteroid_belt(self,ax,rmin,rmax,num_of_asteroids,orbital_inclination):
+    def asteroid_belt(self,ax,asteroid_info):
         """
         scatter plots an asteroid belt
         """
+
+        ##############################################################
+        # unpack belt info
+        ##############################################################
+        
+        rmin                 = asteroid_info['minimum_orbit_radius']
+        rmax                 = asteroid_info['maximum_orbit_radius']
+        num_of_asteroids     = asteroid_info['num_of_asteroids']
+        orbital_inclination  = asteroid_info['orbital_inclination']
 
         orbital_inclination = self.tf.degrees_to_radians(orbital_inclination)
 
@@ -435,7 +444,7 @@ class PySpace:
         venus    = self.planet_dict(ax,d.venus_info)
         earth    = self.planet_dict(ax,d.earth_info)
         mars     = self.planet_dict(ax,d.mars_info)
-        ast_belt = self.asteroid_belt(ax,3e9,45e8,1000,25)  
+        ast_belt = self.asteroid_belt(ax,d.asteroid_belt_info)  
         jupiter  = self.planet_dict(ax,d.jupiter_info)
         saturn   = self.planet_dict(ax,d.saturn_info)
         uranus   = self.planet_dict(ax,d.uranus_info)
