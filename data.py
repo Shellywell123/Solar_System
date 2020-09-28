@@ -10,6 +10,7 @@ class PyData():
 
     def __init__(self, scaling):
         self.scaling = scaling
+        self.AU = 149597870.7#km
 
         if self.scaling == 'Accurate':
             self.sun_scaling_factor     = 1
@@ -42,10 +43,18 @@ class PyData():
         ########################################################################
 
         self.asteroid_belt_info={
-					'minimum_orbit_radius' : 3e9,
-					'maximum_orbit_radius' : 45e8,
-					'num_of_asteroids'     : 1000,
-					'orbital_inclination'  : 25}
+                    'minimum_orbit_radius' : 2.2*self.AU,
+                    'maximum_orbit_radius' : 3.2*self.AU,
+                    'num_of_asteroids'     : 1000,
+                    'orbital_inclination'  : 25
+                    }
+
+        self.kuiper_belt_info={
+                    'minimum_orbit_radius' : 30*self.AU,
+                    'maximum_orbit_radius' : 50*self.AU,
+                    'num_of_asteroids'     : 5000,
+                    'orbital_inclination'  : 0
+                    }
 
         ########################################################################
         # Moon data
@@ -54,47 +63,56 @@ class PyData():
         self.earth_moons = [{
         			'moon_name'         : 'Moon',
                     'moon_radius'       : 1737*self.earth_scaling_factor,
-                    'moon_orbit_radius' : 384402}]
+                    'moon_orbit_radius' : 384402
+                    }]
 
         self.m_moons = [{
 					'moon_name'         : 'Deimos',
                     'moon_radius'       : 6*self.mars_scaling_factor,
-                    'moon_orbit_radius' : 23463},
+                    'moon_orbit_radius' : 23463
+                    },
 
                    {
                     'moon_name'         : 'Phobos',
                     'moon_radius'       : 11*self.mars_scaling_factor,
-                    'moon_orbit_radius' : 9376}]
+                    'moon_orbit_radius' : 9376
+                    }]
 
         self.jupiter_moons = [{
         			'moon_name'         : 'Io',
                     'moon_radius'       : 1821*self.jupiter_scaling_factor,
-                    'moon_orbit_radius' : 421700},
+                    'moon_orbit_radius' : 421700
+                    },
 
                    {
                     'moon_name'         : 'Europa',
                     'moon_radius'       : 1560*self.jupiter_scaling_factor,
-                    'moon_orbit_radius' : 670900},
+                    'moon_orbit_radius' : 670900
+                    },
 
                    {
                     'moon_name'         : 'Gannymede',
                     'moon_radius'       : 2634*self.jupiter_scaling_factor,
-                    'moon_orbit_radius' : 1070400},
+                    'moon_orbit_radius' : 1070400
+                    },
 
                    {
                     'moon_name'         : 'Callisto',
                     'moon_radius'       : 2410*self.jupiter_scaling_factor,
-					'moon_orbit_radius' : 1882700}]
+					'moon_orbit_radius' : 1882700
+					}]
 
         self.saturn_moons = [{
         			'moon_name'         : 'Enceladus',
                     'moon_radius'       : 521*self.saturn_scaling_factor,
-                    'moon_orbit_radius' : 237948},
+                    'moon_orbit_radius' : 237948
+                    },
 
                    {
                     'moon_name'         : 'Titan',
                     'moon_radius'       : 2574*self.saturn_scaling_factor,
-                    'moon_orbit_radius' : 1221870}]
+                    'moon_orbit_radius' : 1221870
+                    }]
 
         ########################################################################
         # Gas Rings data
@@ -155,7 +173,7 @@ class PyData():
                     'orbit_colour'        : 'forestgreen',
                     'rings_info'          : 'no',
                     'moons_info'          : self.earth_moons,
-                    'orbit_radius'        : 149e6,
+                    'orbit_radius'        : self.AU,
                     'body_radius'         : 6378*self.earth_scaling_factor,
                     'orbital_inclination' : 0,
                     'init_orbit_position' : 0,

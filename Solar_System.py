@@ -173,8 +173,9 @@ class PySpace:
             y_ast = r*np.sin(theta * i)
             z_ast = x_ast * np.sin(orbital_inclination)
             
+            a = random.randrange(1,10)/10.
             s = random.randint(1,4)                
-            ax.scatter(x_ast,y_ast,z_ast,color='grey',s=s)
+            ax.scatter(x_ast,y_ast,z_ast,color='grey',s=s,alpha=a)
         print(' - Created Asteroid Belt')
 
 ######################################################################################
@@ -439,18 +440,19 @@ class PySpace:
         
         from data import PyData
         d = PyData(scaling)
-        sun      = self.planet_dict(ax,d.sun_info)
-        mercury  = self.planet_dict(ax,d.mercury_info)
-        venus    = self.planet_dict(ax,d.venus_info)
-        earth    = self.planet_dict(ax,d.earth_info)
-        mars     = self.planet_dict(ax,d.mars_info)
-        ast_belt = self.asteroid_belt(ax,d.asteroid_belt_info)  
-        jupiter  = self.planet_dict(ax,d.jupiter_info)
-        saturn   = self.planet_dict(ax,d.saturn_info)
-        uranus   = self.planet_dict(ax,d.uranus_info)
-        neptune  = self.planet_dict(ax,d.neptune_info)
-        pluto    = self.planet_dict(ax,d.pluto_info)
-        stars    = self.starry_night(ax,max_lim*5,2000)
+        # sun           = self.planet_dict(ax,d.sun_info)
+        # mercury       = self.planet_dict(ax,d.mercury_info)
+        # venus         = self.planet_dict(ax,d.venus_info)
+        # earth         = self.planet_dict(ax,d.earth_info)
+        # mars          = self.planet_dict(ax,d.mars_info)
+        # asteroid_belt = self.asteroid_belt(ax,d.asteroid_belt_info)  
+        # jupiter       = self.planet_dict(ax,d.jupiter_info)
+        # saturn        = self.planet_dict(ax,d.saturn_info)
+        # uranus        = self.planet_dict(ax,d.uranus_info)
+        # neptune       = self.planet_dict(ax,d.neptune_info)
+        kuiper_belt   = self.asteroid_belt(ax,d.kuiper_belt_info)  
+        pluto         = self.planet_dict(ax,d.pluto_info)
+        stars         = self.starry_night(ax,max_lim*5,2000)
         
         ##############################################################
         # set plot lims
